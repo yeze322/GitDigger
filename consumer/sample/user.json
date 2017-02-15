@@ -1,0 +1,19 @@
+{
+  "login": "weblgdong",
+  "id": 10458600,
+  "avatar_url": "https://avatars.githubusercontent.com/u/10458600?v=3",
+  "gravatar_id": "",
+  "url": "https://api.github.com/users/weblgdong",
+  "html_url": "https://github.com/weblgdong",
+  "followers_url": "https://api.github.com/users/weblgdong/followers",
+  "following_url": "https://api.github.com/users/weblgdong/following{/other_user}",
+  "gists_url": "https://api.github.com/users/weblgdong/gists{/gist_id}",
+  "starred_url": "https://api.github.com/users/weblgdong/starred{/owner}{/repo}",
+  "subscriptions_url": "https://api.github.com/users/weblgdong/subscriptions",
+  "organizations_url": "https://api.github.com/users/weblgdong/orgs",
+  "repos_url": "https://api.github.com/users/weblgdong/repos",
+  "events_url": "https://api.github.com/users/weblgdong/events{/privacy}",
+  "received_events_url": "https://api.github.com/users/weblgdong/received_events",
+  "type": "User",
+  "site_admin": false
+}
