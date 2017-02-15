@@ -1,0 +1,12 @@
+{
+  "name": "GitDigger",
+  "version": "1.0.0",
+  "description": "fetching github repo data by using C/S model",
+  "main": "index.js",
+  "repository": {},
+  "author": "zeye",
+  "license": "MIT",
+  "dependencies": {
+    "pg": "^6.1.2"
+  }
+}
