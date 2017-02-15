@@ -1,0 +1,21 @@
+CREATE TABLE starring (
+  id INT PRIMARY KEY NOT NULL,
+  userid INT NOT NULL,
+  repolist JSON NOT NULL
+);
+
+CREATE TABLE stargazers (
+  id INT PRIMARY KEY NOT NULL,
+  repoid INT NOT NULL,
+  userlist JSON NOT NULL
+);
+
+CREATE TABLE users (
+  id INT PRIMARY KEY NOT NULL,
+  payload JSON NOT NULL
+);
+
+CREATE TABLE repos (
+  id INT PRIMARY KEY NOT NULL,
+  payload JSON NOT NULL
+);
