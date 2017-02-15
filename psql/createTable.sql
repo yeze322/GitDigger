@@ -12,12 +12,12 @@ CREATE SEQUENCE starrings_id_seq;
 CREATE TABLE starrings (
   id INT PRIMARY KEY DEFAULT nextval('starrings_id_seq'),
   userid INT NOT NULL,
-  repolist JSON NOT NULL
+  repolist integer[] NOT NULL
 );
 
 CREATE SEQUENCE stargazers_id_seq;
 CREATE TABLE stargazers (
   id INT PRIMARY KEY DEFAULT nextval('stargazers_id_seq'),
   repoid INT NOT NULL,
-  userlist JSON NOT NULL
+  userlist integer[] NOT NULL
 );

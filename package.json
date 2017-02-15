@@ -6,6 +6,10 @@
   "repository": {},
   "author": "zeye",
   "license": "MIT",
+  "scripts": {
+    "dbinit": "psql -d github -f psql/createTable.sql",
+    "dbclean": "psql -d github -f psql/dropTable.sql"
+  },
   "dependencies": {
     "pg": "^6.1.2"
   }
