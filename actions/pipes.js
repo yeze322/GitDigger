@@ -1,10 +1,12 @@
+var rp = require('request-promise')
+
 let repo2repoUrl = (fullName) => `https://api.github.com/repos/${fullName}`
 let repo2stargazerUrl = (fullName) => `https://api.github.com/repos/${fullName}/stargazers`
 let user2starringUrl = (name) => `https://api.github.com/users/${name}/starred`
 let page2urlSuffix = (page, per_page) => `?page=${page}&per_page=${per_page}`
 
-let url2request = (uri) => ({
-  uri: uri,
+let url2request = (url) => rp({
+  uri: url,
   headers: {
     'User-Agent': 'user2repo'
   },
