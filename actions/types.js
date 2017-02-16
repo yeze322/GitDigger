@@ -1,9 +1,15 @@
 const SAVE = {
   _TEST: 'debug.test',
-  USER: 'entity.user', // github user entity
-  REPO: 'entity.repo', // github repo entity
-  STARRING: 'edge.starring', // list of repos a user is starring
-  STARGAZER: 'edge.stargazer' // list of starrers of a repo
+  USER: 'data.user', // github user entity
+  REPO: 'data.repo', // github repo entity
+  STARRING: 'data.starring', // list of repos a user is starring
+  STARGAZER: 'data.stargazer' // list of starrers of a repo
+}
+
+const ENTITY = {
+  USER: 'entity.user',
+  REPO: 'entity.repo',
+  TRIGGER: 'owner_reponame'
 }
 
 const URL = {
@@ -15,5 +21,6 @@ const URL = {
 
 module.exports = {
   SAVE,
+  ENTITY,
   URL
 }
