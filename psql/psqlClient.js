@@ -1,19 +1,19 @@
 var pg = require('pg')
 
 class Client {
-  constructor (config) {
+  constructor(config) {
     if (config === undefined) {
       config = require('./config.json')
     }
     this.config = config
   }
-  start () {
+  start() {
     this.pool = new pg.Pool(this.config)
   }
-  stop () {
+  stop() {
     this.pool.end()
   }
-  query () {
+  query() {
     return this.pool.query(...arguments)
   }
 }
