@@ -1,11 +1,6 @@
 var DBClient = require('./MyClient')
 var q = require('../messageQ/q')
-var {
-  USER,
-  REPO,
-  STARGAZER,
-  STARRING
-} = require('../actions/types')
+var { SAVE } = require('../actions/types')
 
 console.log('================================')
 console.log('Starting PostgresQL client ...')
@@ -13,18 +8,18 @@ var client = new DBClient()
 client.start()
 
 console.log('Register message listener ...')
-q.process(REPO, function (job, done) {
+q.process(SAVE.REPO, function (job, done) {
   client.saveRepo(job.data, () => {done()})
 })
-q.process(STARGAZER, function (job, done) {
+q.process(SAVE.STARGAZER, function (job, done) {
   client.saveStargazer(job.data, () => {done()})
 })
 
-q.process(USER, function (job, done) {
+q.process(SAVE.USER, function (job, done) {
   client.saveUser(job.data, () => {done()})
 })
 
-q.process(STARRING, function (job, done) {
+q.process(SAVE.STARRING, function (job, done) {
   client.saveStarring(job.data, () => {done()})
 })
 
