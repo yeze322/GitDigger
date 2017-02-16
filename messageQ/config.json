@@ -1,0 +1,8 @@
+{
+  "prefix": "q",
+  "redis": {
+    "host": "localhost",
+    "port": "3456",
+    "db": 3
+  }
+}

@@ -1,4 +1,4 @@
-var Client = require('./psqlClient')
+var Client = require('../psql/psqlClient')
 
 class MyClient extends Client {
   constructor(config) {
