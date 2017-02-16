@@ -1,5 +1,5 @@
 var DBClient = require('./MyClient')
-var q = require('../messageQ/q')
+var q = require('../messageQ')
 var { SAVE } = require('../actions/types')
 
 console.log('================================')
