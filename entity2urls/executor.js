@@ -1,6 +1,6 @@
 var Q = require('../messageQ')
 var { ENTITY, URL } = require('../actions/types')
-var pipes = require('./pipes')
+var pipes = require('../actions/pipes')
 var dispatch = require('../actions/dispatch')
 var { UrlEvent } = require('../actions/schemas')
 
