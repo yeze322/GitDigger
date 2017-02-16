@@ -6,12 +6,6 @@ const SAVE = {
   STARGAZER: 'data.stargazer' // list of starrers of a repo
 }
 
-const ENTITY = {
-  USER: 'entity.user',
-  REPO: 'entity.repo',
-  TRIGGER: 'owner_reponame'
-}
-
 const URL = {
   USER: 'url.user',
   REPO: 'url.repo',
@@ -21,6 +15,5 @@ const URL = {
 
 module.exports = {
   SAVE,
-  ENTITY,
   URL
 }
