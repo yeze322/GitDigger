@@ -5,7 +5,7 @@ let repo2stargazerUrl = (fullName) => `https://api.github.com/repos/${fullName}/
 let user2starringUrl = (name) => `https://api.github.com/users/${name}/starred`
 let page2urlSuffix = (page, per_page) => `?page=${page}&per_page=${per_page}`
 
-let url2request = (url) => rp({
+let _url2request = (url) => rp({
   uri: url,
   headers: {
     'User-Agent': 'user2repo'
@@ -30,5 +30,5 @@ module.exports = {
   repo2stargazerUrl,
   user2starringUrl,
   page2urlSuffix,
-  url2request
+  url2request: _test_url2request
 }

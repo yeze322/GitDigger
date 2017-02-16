@@ -2,7 +2,7 @@ var Q = require('../messageQ')
 var { SAVE, URL } = require('../actions/types')
 var pipes = require('../actions/pipes')
 var { UrlEvent, StargazerEdge, StargazingEdge } = require('../actions/schemas')
-var dispatch = require('../actions/dispatch')
+var dispatch = require('../actions/dispatch').bind(this, Q)
 
 function fetchThenSave (from, to) {
   Q.process(from, function (job, done) {
@@ -27,14 +27,14 @@ Q.process(URL.STARGAZER, function (job, done) {
       stargazers.map(x => x.id)
     )
     dispatch(SAVE.STARGAZER, payload)
-    for (let user in stargazers) {
+    for (let user of stargazers) {
       dispatch(SAVE.USER, user)
       var nextUrl = pipes.user2starringUrl(user.login)
       dispatch(URL.STARRING, new UrlEvent(nextUrl, user))
     }
     done()
   }).catch(err => {
-    console.log('Err at: ', urlEvent.url, err)
+    console.log(`Err at [${urlEvent.url}] - ${err}`)
     done()
   })
 })
@@ -48,14 +48,14 @@ Q.process(URL.STARRING, function (job, done) {
       starrings.map(x => x.id)
     )
     dispatch(SAVE.STARRING, payload)
-    for (let repo in starrings) {
+    for (let repo of starrings) {
       dispatch(SAVE.REPO, repo)
       var nextUrl = pipes.repo2stargazerUrl(repo.full_name)
       dispatch(URL.STARGAZER, new UrlEvent(nextUrl, repo))
     }
     done()
   }).catch(err => {
-    console.log('Err at: ', urlEvent.url, err)
+    console.log(`Err at [${urlEvent.url}] - ${err}`)
     done()
   })
 })

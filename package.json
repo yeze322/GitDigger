@@ -8,7 +8,14 @@
   "license": "MIT",
   "scripts": {
     "dbinit": "psql -d github -f psql/createTable.sql",
-    "dbclean": "psql -d github -f psql/dropTable.sql"
+    "dbclean": "psql -d github -f psql/dropTable.sql",
+    "service": "npm run service:db && npm run service:url",
+    "service:restart": "pm2 restart dig_svc_db dig_svc_url",
+    "service:db": "pm2 start ./payload2db/executor.js --name=\"dig_svc_db\"",
+    "service:url": "pm2 start ./url2actions/executor.js --name=\"dig_svc_url\"",
+    "stop:db": "pm2 stop dig_svc_db",
+    "stop:url": "pm2 stop dig_svc_url",
+    "stop:all": "pm2 stop dig_svc_db dig_svc_url"
   },
   "dependencies": {
     "kue": "^0.11.5",
