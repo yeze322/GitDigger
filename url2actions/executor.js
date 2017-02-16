@@ -5,23 +5,19 @@ var pipes = require('./pipes')
 var { StargazerEdge, StargazingEdge } = require('../actions/schemas')
 var dispatch = require('../actions/dispatch')
 
-Q.process(URL.REPO, function (job, done) {
-  var urlEvent = job.data
-  var request = pipes.url2request(urlEvent.url)
-  request.then(repoEntity => {
-    dispatch(SAVE.REPO, repoEntity)
-    done()
+function fetchThenSave (from, to) {
+  Q.process(from, function (job, done) {
+    var urlEvent = job.data
+    var request = pipes.url2request(urlEvent.url)
+    request.then(data => {
+      dispatch(to, data)
+      done()
+    })
   })
-})
+}
 
-Q.process(URL.USER, function (job, done) {
-  var urlEvent = job.data
-  var request = pipes.url2request(urlEvent.url)
-  request.then(userEntity => {
-    dispatch(SAVE.USER, userEntity)
-    done()
-  })
-})
+fetchThenSave(URL.REPO, SAVE.REPO)
+fetchThenSave(URL.USER, SAVE.USER)
 
 Q.process(URL.STARGAZER, function (job, done) {
   var urlEvent = job.data

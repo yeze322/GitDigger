@@ -27,8 +27,6 @@ console.log(`Your service is runnning at ${process.pid} ...`)
 console.log('================================')
 
 function cleanUp () {
-  var fs = require('fs')
-  fs.writeFile('./temp.txt', 'heloo')
   console.log('Stop psql client ...')
   client.stop()
   console.log('Stop kue connection ...')
