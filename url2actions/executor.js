@@ -50,8 +50,8 @@ Q.process(URL.STARRING, function (job, done) {
     dispatch(SAVE.STARRING, payload)
     for (let repo of starrings) {
       dispatch(SAVE.REPO, repo)
-      var nextUrl = pipes.repo2stargazerUrl(repo.full_name)
-      dispatch(URL.STARGAZER, new UrlEvent(nextUrl, repo))
+      // var nextUrl = pipes.repo2stargazerUrl(repo.full_name)
+      // dispatch(URL.STARGAZER, new UrlEvent(nextUrl, repo))
     }
     done()
   }).catch(err => {

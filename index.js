@@ -10,16 +10,20 @@ function startFromRepoName (fullName) {
   var request = pipes.url2request(url)
   return request
     .then(repoEntity => {
+      console.log('Success', repoEntity.id, repoEntity.full_name)
       dispatch(SAVE.REPO, repoEntity)
       var nextUrl = pipes.repo2stargazerUrl(repoEntity.full_name)
       dispatch(URL.STARGAZER, new UrlEvent(nextUrl, repoEntity))
     })
+    .catch(err => {
+      console.log('Err: ', err)
+    })
 }
 
 startFromRepoName('vuejs/vue')
-  .then(() => {
-    Q.shutdown(5000, (err) => {
-      console.log('Kue shutdown: ', err || 'success!')
-      process.exit(0)
-    })
-  })
+  // .then(() => {
+  //   Q.shutdown(5000, (err) => {
+  //     console.log('Kue shutdown: ', err || 'success!')
+  //     process.exit(0)
+  //   })
+  // })
