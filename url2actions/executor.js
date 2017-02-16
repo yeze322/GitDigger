@@ -1,5 +1,5 @@
 var Q = require('../messageQ')
-var { ENTITY, SAVE, URL } = require('../actions/types')
+var { SAVE, URL } = require('../actions/types')
 var pipes = require('../actions/pipes')
 var { UrlEvent, StargazerEdge, StargazingEdge } = require('../actions/schemas')
 var dispatch = require('../actions/dispatch')
@@ -33,6 +33,9 @@ Q.process(URL.STARGAZER, function (job, done) {
       dispatch(URL.STARRING, new UrlEvent(nextUrl, user))
     }
     done()
+  }).catch(err => {
+    console.log('Err at: ', urlEvent.url, err)
+    done()
   })
 })
 
@@ -50,6 +53,9 @@ Q.process(URL.STARRING, function (job, done) {
       var nextUrl = pipes.repo2stargazerUrl(repo.full_name)
       dispatch(URL.STARGAZER, new UrlEvent(nextUrl, repo))
     }
+    done()
+  }).catch(err => {
+    console.log('Err at: ', urlEvent.url, err)
     done()
   })
 })

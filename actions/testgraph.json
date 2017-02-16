@@ -1,0 +1,16 @@
+{
+  "https://api.github.com/repos/vuejs/vue": {
+    "id": 1001,
+    "full_name": "vuejs/vue"
+  },
+  "https://api.github.com/repos/vuejs/vue/stargazers": [
+    { "id": 666, "login": "john" },
+    { "id": 777, "login": "nicholas" }
+  ],
+  "https://api.github.com/users/john/starred": [
+    { "id": 1002, "full_name": "facebook/reactjs" }
+  ],
+  "https://api.github.com/users/nicholas/starred": [
+    { "id": 1023, "full_name": "bkha/kue" }
+  ]
+}

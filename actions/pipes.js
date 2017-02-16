@@ -1,4 +1,4 @@
-var rp = require('request-promise')
+let rp = require('request-promise')
 
 let repo2repoUrl = (fullName) => `https://api.github.com/repos/${fullName}`
 let repo2stargazerUrl = (fullName) => `https://api.github.com/repos/${fullName}/stargazers`
@@ -12,6 +12,18 @@ let url2request = (url) => rp({
   },
   json: true
 })
+
+var _testGraph = require('./testgraph.json')
+let _test_url2request = (url) => {
+  return new Promise((resolve, reject) => {
+    let value = _testGraph[url]
+    if (value) {
+      resolve(value)
+    } else {
+      reject('No Content.')
+    }
+  })
+}
 
 module.exports = {
   repo2repoUrl,
