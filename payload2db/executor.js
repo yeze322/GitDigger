@@ -9,22 +9,18 @@ client.start()
 
 console.log('Register message listener ...')
 q.process(SAVE.REPO, function (job, done) {
-  console.log('[SAVE][REPO]: ', job.data)
-  client.saveRepo(job.data, () => {done()})
+  client.saveRepo(job.data, done)
 })
 q.process(SAVE.STARGAZER, function (job, done) {
-  console.log('[SAVE][STARGAZER]: ', job.data)
-  client.saveStargazer(job.data, () => {done()})
+  client.saveStargazer(job.data, done)
 })
 
 q.process(SAVE.USER, function (job, done) {
-  console.log('[SAVE][USER]: ', job.data)
-  client.saveUser(job.data, () => {done()})
+  client.saveUser(job.data, done)
 })
 
 q.process(SAVE.STARRING, function (job, done) {
-  console.log('[SAVE][STARRING]: ', job.data)
-  client.saveStarring(job.data, () => {done()})
+  client.saveStarring(job.data, done)
 })
 
 console.log(`Your service is runnning at ${process.pid} ...`)
