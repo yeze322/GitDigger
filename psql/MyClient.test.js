@@ -1,5 +1,5 @@
 var PClient = require('./MyClient')
-var testData = require('../consumer/sample')
+var testData = require('./sample')
 
 var client = new PClient()
 client.start()
