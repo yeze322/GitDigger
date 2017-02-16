@@ -5,7 +5,7 @@ var {
   REPO,
   STARGAZER,
   STARRING
-} = require('../messageQ/types')
+} = require('../actions/types')
 
 console.log('================================')
 console.log('Starting PostgresQL client ...')
