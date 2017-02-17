@@ -27,7 +27,7 @@ class MyClient extends Client {
     )
   }
   saveStarring(payload, callback) {
-    console.log('[SAVE][STARRING]: ', payload.userid, payload.repolist.length)
+    console.log('[SAVE][STARRING]: ', payload.userid, 'count = ', payload.repolist.length)
     this.query(
       'INSERT INTO starrings (userid, repolist) VALUES ($1, $2::int[])',
       [payload.userid, payload.repolist],
