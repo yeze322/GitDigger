@@ -7,19 +7,19 @@
   "author": "zeye",
   "license": "MIT",
   "scripts": {
-    "dbinit": "psql -d github -f psql/createTable.sql",
-    "dbclean": "psql -d github -f psql/dropTable.sql",
-    "service": "npm run service:db && npm run service:url",
-    "service:restart": "pm2 restart dig_svc_db dig_svc_url",
-    "service:db": "pm2 start ./payload2db/executor.js --name=\"dig_svc_db\"",
-    "service:url": "pm2 start ./url2actions/executor.js --name=\"dig_svc_url\"",
-    "stop:db": "pm2 stop dig_svc_db",
-    "stop:url": "pm2 stop dig_svc_url",
-    "stop:all": "pm2 stop dig_svc_db dig_svc_url"
+    "db:init": "psql -d github -f psql/createTable.sql",
+    "db:clean": "psql -d github -f psql/cleanTable.sql",
+    "db:reset": "psql -d github -f psql/dropTable.sql",
+    "start": "npm run service:db && npm run service:url",
+    "restart": "pm2 stop all && pm2 flush && npm run start",
+    "stop": "pm2 stop dig_db dig_url",
+    "service:db": "pm2 start ./payload2db/executor.js --name=\"dig_db\"",
+    "service:url": "pm2 start ./url2actions/executor.js --name=\"dig_url\""
   },
   "dependencies": {
+    "bluebird": "^3.4.7",
     "kue": "^0.11.5",
-    "pg": "^6.1.2",
+    "pg-promise": "^5.5.6",
     "request": "^2.79.0",
     "request-promise": "^4.1.1"
   }
