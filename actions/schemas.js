@@ -1,7 +1,7 @@
-function UrlEvent (url, invoker, hop = 0) {
+function UrlEvent (url, invoker, maxHop = 0) {
   this.url = url
   this.invoker = invoker
-  this.hop = hop
+  this.hop = maxHop
 }
 
 function StargazerEdge (repoid, userlist) {

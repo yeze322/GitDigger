@@ -33,12 +33,12 @@ Q.process(URL.STARGAZER, function (job, done) {
     })
     // STEP 2 - trigger next requests under the limit of max HOP
     .then(stargazers => {
-      if (urlEvent.hop < MAX_HOP) {
+      if (urlEvent.hop > 0) {
         stargazers.forEach(user => {
           dispatch(URL.STARRING, new UrlEvent(
             pipes.user2starringUrl(user.login),
             user,
-            urlEvent.hop + 1
+            urlEvent.hop - 1
           ))
         })
       }
@@ -64,12 +64,12 @@ Q.process(URL.STARRING, function (job, done) {
     })
     // STEP 2 - trigger next requests under the limit of max HOP
     .then(starrings => {
-      if (urlEvent.hop < MAX_HOP) {
+      if (urlEvent.hop > 0) {
         starrings.forEach(repo => {
           dispatch(URL.STARGAZER, new UrlEvent(
             pipes.repo2stargazerUrl(repo.full_name),
             repo,
-            urlEvent.hop + 1
+            urlEvent.hop - 1
           ))
         })
       }
