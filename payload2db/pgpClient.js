@@ -20,7 +20,7 @@ class MyClient {
   saveUser(payload) {
     console.log('[SAVE][USER]: ', payload.id, payload.login)
     return this.db.query(
-      'INSERT INTO users VALUES ($1, $2::json)',
+      'INSERT INTO users VALUES ($1, $2)',
       [payload.id, payload]
     )
   }
@@ -37,7 +37,7 @@ class MyClient {
   saveRepo(payload) {
     console.log('[SAVE][REPO]: ', payload.id, payload.full_name)
     return this.db.query(
-      'INSERT INTO repos VALUES ($1, $2::json)',
+      'INSERT INTO repos VALUES ($1, $2)',
       [payload.id, payload]
     )
   }
@@ -51,14 +51,14 @@ class MyClient {
   saveStarring(payload, callback) {
     console.log('[SAVE][STARRING]: ', payload.userid, 'count = ', payload.repolist.length)
     return this.db.query(
-      'INSERT INTO starrings (userid, repolist) VALUES ($1, $2::int[])',
+      'INSERT INTO starrings (userid, repolist) VALUES ($1, $2)',
       [payload.userid, payload.repolist]
     )
   }
   saveStargazer(payload, callback) {
     console.log('[SAVE][STARGAZER]: ', payload.repoid, 'count = ', payload.userlist.length)
     return this.db.query(
-      'INSERT INTO stargazers (repoid, userlist) VALUES ($1, $2::int[])',
+      'INSERT INTO stargazers (repoid, userlist) VALUES ($1, $2)',
       [payload.repoid, payload.userlist]
     )
   }
