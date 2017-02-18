@@ -23,6 +23,14 @@ q.process(SAVE.STARRING, function (job, done) {
   client.saveStarring(job.data, done)
 })
 
+q.process(SAVE.BATCH_USERS, function (job, done) {
+  client.saveBatchUsers(job.data, done)
+})
+
+q.process(SAVE.BATCH_REPOS, function (job, done) {
+  client.saveBatchRepos(job.data, done)
+})
+
 console.log(`Your service is runnning at ${process.pid} ...`)
 console.log('================================')
 
