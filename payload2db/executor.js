@@ -6,10 +6,22 @@ var q = require('../messageQ')
 var { SAVE } = require('../actions/types')
 
 const getQuery = pgp.helpers.insert
+const IGNORE_CONFLICT = ' ON CONFLICT DO NOTHING'
 const onErr = (table) => (reason) => { console.log('[db]Failed at ', table, ' -> ', reason.detail) }
 
 console.log('================================')
 console.log('Register message listener ...')
+
+q.process(SAVE.USER, function (job, done) {
+  // console.log('[SAVE][USER]: ', job.data.id, job.data.login)
+  var data = {
+    id: job.data.id,
+    payload: job.data
+  }
+  db.query(getQuery(data, ['id', 'payload'], 'users'))
+    .catch(onErr('users'))
+    .finally(done)
+})
 
 q.process(SAVE.REPO, function (job, done) {
   // console.log('[SAVE][REPO]: ', job.data.id, job.data.full_name)
@@ -33,17 +45,6 @@ q.process(SAVE.STARGAZER, function (job, done) {
     .finally(done)
 })
 
-q.process(SAVE.USER, function (job, done) {
-  // console.log('[SAVE][USER]: ', job.data.id, job.data.login)
-  var data = {
-    id: job.data.id,
-    payload: job.data
-  }
-  db.query(getQuery(data, ['id', 'payload'], 'users'))
-    .catch(onErr('users'))
-    .finally(done)
-})
-
 q.process(SAVE.STARRING, function (job, done) {
   // console.log('[SAVE][STARRING]: ', job.data.userid, 'count = ', job.data.repolist.length)
   var data = {
@@ -56,11 +57,23 @@ q.process(SAVE.STARRING, function (job, done) {
 })
 
 q.process(SAVE.BATCH_USERS, function (job, done) {
-  client.saveBatchUsers(job.data).catch(onErr).finally(done)
+  var dataMulti = job.data.map(user => ({
+    id: user.id,
+    payload: user
+  }))
+  db.query(getQuery(dataMulti, ['id', 'payload'], 'users') + IGNORE_CONFLICT)
+    .catch(onErr('users[batch]'))
+    .finally(done)
 })
 
 q.process(SAVE.BATCH_REPOS, function (job, done) {
-  client.saveBatchRepos(job.data).catch(onErr).finally(done)
+  var dataMulti = job.data.map(repo => ({
+    id: repo.id,
+    payload: repo
+  }))
+  db.query(getQuery(dataMulti, ['id', 'payload'], 'repos') + IGNORE_CONFLICT)
+    .catch(onErr('repos[batch]'))
+    .finally(done)
 })
 
 console.log(`Your service is runnning at ${process.pid} ...`)

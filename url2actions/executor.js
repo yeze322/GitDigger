@@ -28,7 +28,7 @@ Q.process(URL.STARGAZER, function (job, done) {
         urlEvent.invoker.id,
         stargazers.map(x => x.id)
       ))
-      stargazers.forEach(user => { dispatch(SAVE.USER, user) })
+      dispatch(SAVE.BATCH_USERS, stargazers)
       return stargazers
     })
     // STEP 2 - trigger next requests under the limit of max HOP
@@ -59,7 +59,7 @@ Q.process(URL.STARRING, function (job, done) {
         urlEvent.invoker.id,
         starrings.map(x => x.id)
       ))
-      starrings.forEach(repo => { dispatch(SAVE.REPO, repo) })
+      dispatch(SAVE.BATCH_REPOS, starrings)
       return starrings
     })
     // STEP 2 - trigger next requests under the limit of max HOP
