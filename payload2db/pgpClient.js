@@ -9,6 +9,12 @@ class MyClient {
       config = require('./config.json')
     }
     this.db = pgp(config)
+    this.columnSet = {
+      USER: pgp.helpers.ColumnSet(['id', 'payload'], 'users'),
+      REPO: pgp.helpers.ColumnSet(['id', 'payload'], 'repos'),
+      STARRING: pgp.helpers.ColumnSet(['userid', 'repolist'], 'starrings'),
+      STARGAZER: pgp.helpers.ColumnSet(['repoid', 'userlist'], 'stargazers')
+    }
   }
   end() {
     pgp.end()
@@ -19,10 +25,12 @@ class MyClient {
    */
   saveUser(payload) {
     console.log('[SAVE][USER]: ', payload.id, payload.login)
-    return this.db.query(
-      'INSERT INTO users VALUES ($1, $2)',
-      [payload.id, payload]
-    )
+    var data = {
+      id: payload.id,
+      payload: payload
+    }
+    var query = pgp.helpers.insert(data, this.columnSet.USER)
+    return this.db.query(query)
   }
   /**
    * @param {Array} payload an array of user objects
@@ -32,6 +40,7 @@ class MyClient {
     // TODO
   }
   /**
+   * @description keep an example of using raw query
    * @param {Object} payload an instance of repo
    */
   saveRepo(payload) {
@@ -44,23 +53,48 @@ class MyClient {
   /**
    * @param {Array} payload an array of repo objects
    */
-  saveBatchRepos(payload, callback) {
+  saveBatchRepos(payload) {
     console.log('[SAVE][BATCH_REPOS]: ', payload.length, ' in total')
     // TODO
   }
-  saveStarring(payload, callback) {
+  saveStarring(payload) {
     console.log('[SAVE][STARRING]: ', payload.userid, 'count = ', payload.repolist.length)
-    return this.db.query(
-      'INSERT INTO starrings (userid, repolist) VALUES ($1, $2)',
-      [payload.userid, payload.repolist]
-    )
+    var data = {
+      userid: payload.userid,
+      repolist: payload.repolist
+    }
+    var query = pgp.helpers.insert(data, this.columnSet.STARRING)
+    return this.db.query(query)
   }
-  saveStargazer(payload, callback) {
+  saveStargazer(payload) {
     console.log('[SAVE][STARGAZER]: ', payload.repoid, 'count = ', payload.userlist.length)
-    return this.db.query(
-      'INSERT INTO stargazers (repoid, userlist) VALUES ($1, $2)',
-      [payload.repoid, payload.userlist]
-    )
+    var data = {
+      repoid: payload.repoid,
+      userlist: payload.userlist
+    }
+    var query = pgp.helpers.insert(data, this.columnSet.STARGAZER)
+    return this.db.query(query)
+  }
+  /**
+   * @description abstraction of insert procedure
+   */
+  insert(type, payload) {
+    var payload2data = {}
+    var transformFunc = payload2data[type]
+    var data = transformFunc(payload)
+    var column = this.columnSet[type]
+    var query = pgp.helpers.insert(data, column)
+    console.log('find from dictionary')
+    return this.db.query(query)
+  }
+  /**
+   * @description implement an extendable db client for dealing data of multi types
+   * @param {enum} type data type of the payload data
+   * @param {function} transformer transform payload to table data format
+   * @param {Object} target json contains target table name / table column names
+   */
+  registerType(type, transformer, target) {
+    
   }
 }
 
