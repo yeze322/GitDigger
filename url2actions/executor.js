@@ -1,8 +1,9 @@
 var Q = require('../messageQ')
-var { SAVE, URL } = require('../actions/types')
 var pipes = require('../actions/pipes')
-var { UrlEvent, StargazerEdge, StargazingEdge } = require('../actions/schemas')
+var redisClient = require('./redisClient')
 var dispatch = require('../actions/dispatch').bind(this, Q)
+var { SAVE, URL } = require('../actions/types')
+var { UrlEvent, StargazerEdge, StargazingEdge } = require('../actions/schemas')
 
 const MAX_HOP = 2
 function fetchThenSave (from, to) {
@@ -52,7 +53,16 @@ Q.process(URL.STARGAZER, function (job, done) {
 
 Q.process(URL.STARRING, function (job, done) {
   var urlEvent = job.data
-  pipes.url2request(urlEvent.url)
+  redisClient
+    .saddAsync('url', urlEvent.url)
+    .then(success => {
+      if (success === 0) {
+        // duplicated url, skip it
+        throw 'skip dup url'
+      } else {
+        return pipes.url2request(urlEvent.url)
+      }
+    })
     // STEP 1 - Save entities to db
     .then(starrings => {
       dispatch(SAVE.STARRING, new StargazingEdge(
@@ -73,10 +83,23 @@ Q.process(URL.STARRING, function (job, done) {
           ))
         })
       }
-      done()
     })
     .catch(err => {
+      // switch err.reason, ignore it or save to error list
       console.log(`Err at [${urlEvent.url}] - ${err}`)
-      done()
     })
+    .finally(done)
 })
+
+function cleanUp () {
+  console.log('Stop redis client ...')
+  redisClient.end()
+  console.log('Stop kue connection ...')
+  Q.shutdown(3000, function (err) {
+    console.log('Kue Shutdown: ', err || '')
+    process.exit(0)
+  })
+}
+
+process.on('SIGINT', cleanUp)
+process.on('SIGTERM', cleanUp)
