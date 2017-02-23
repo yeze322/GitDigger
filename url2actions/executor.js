@@ -20,9 +20,22 @@ function fetchThenSave (from, to) {
 fetchThenSave(URL.REPO, SAVE.REPO)
 fetchThenSave(URL.USER, SAVE.USER)
 
+function checkDupUrl(url) {
+  return redisClient
+    .saddAsync('url', url)
+    .then(success => {
+      if (success === 0) {
+        throw 'skip dup url'
+      } else {
+        return url
+      }
+    })
+}
+
 Q.process(URL.STARGAZER, function (job, done) {
   var urlEvent = job.data
-  pipes.url2request(urlEvent.url)
+  checkDupUrl(urlEvent.url)
+    .then(url => pipes.url2request(url))
     // STEP 1 - Save entities to db
     .then(stargazers => {
       dispatch(SAVE.STARGAZER, new StargazerEdge(
@@ -43,26 +56,17 @@ Q.process(URL.STARGAZER, function (job, done) {
           ))
         })
       }
-      done()
     })
     .catch(err => {
       console.log(`Err at [${urlEvent.url}] - ${err}`)
-      done()
     })
+    .finally(done)
 })
 
 Q.process(URL.STARRING, function (job, done) {
   var urlEvent = job.data
-  redisClient
-    .saddAsync('url', urlEvent.url)
-    .then(success => {
-      if (success === 0) {
-        // duplicated url, skip it
-        throw 'skip dup url'
-      } else {
-        return pipes.url2request(urlEvent.url)
-      }
-    })
+  checkDupUrl(urlEvent.url)
+    .then(url => pipes.url2request(url))
     // STEP 1 - Save entities to db
     .then(starrings => {
       dispatch(SAVE.STARRING, new StargazingEdge(
