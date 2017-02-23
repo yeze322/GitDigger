@@ -1,8 +1,8 @@
 let rp = require('request-promise')
 
-let repo2repoUrl = (fullName) => `https://api.github.com/repos/${fullName}`
-let repo2stargazerUrl = (fullName) => `https://api.github.com/repos/${fullName}/stargazers`
-let user2starringUrl = (name) => `https://api.github.com/users/${name}/starred`
+let reponame2repoUrl = (fullName) => `https://api.github.com/repos/${fullName}`
+let repo2stargazerUrl = (repo) => `https://api.github.com/repos/${repo.full_name}/stargazers`
+let user2starringUrl = (user) => `https://api.github.com/users/${user.login}/starred`
 let page2urlSuffix = (page, per_page) => `?page=${page}&per_page=${per_page}`
 
 let _url2request = (url) => {
@@ -29,9 +29,9 @@ let _test_url2request = (url) => {
 }
 
 module.exports = {
-  repo2repoUrl,
+  repoName2repoUrl,
   repo2stargazerUrl,
   user2starringUrl,
   page2urlSuffix,
-  url2request: _url2request
+  url2request: _test_url2request
 }

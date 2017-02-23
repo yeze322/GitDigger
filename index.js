@@ -6,13 +6,13 @@ var { SAVE, URL } = require('./actions/types')
 var pipes = require('./actions/pipes')
 
 function startFromRepoName (fullName) {
-  var url = pipes.repo2repoUrl(fullName)
+  var url = pipes.repoName2repoUrl(fullName)
   var request = pipes.url2request(url)
   return request
     .then(repoEntity => {
       console.log('Success', repoEntity.id, repoEntity.full_name)
       dispatch(SAVE.REPO, repoEntity)
-      var nextUrl = pipes.repo2stargazerUrl(repoEntity.full_name)
+      var nextUrl = pipes.repo2stargazerUrl(repoEntity)
       dispatch(URL.STARGAZER, new UrlEvent(nextUrl, repoEntity, 2))
     })
     .catch(err => {

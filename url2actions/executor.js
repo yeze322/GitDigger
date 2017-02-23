@@ -38,7 +38,7 @@ Q.process(URL.STARGAZER, function (job, done) {
       if (urlEvent.hop > 0) {
         stargazers.forEach(user => {
           dispatch(URL.STARRING, new UrlEvent(
-            pipes.user2starringUrl(user.login),
+            pipes.user2starringUrl(user),
             user,
             urlEvent.hop - 1
           ))
@@ -69,7 +69,7 @@ Q.process(URL.STARRING, function (job, done) {
       if (urlEvent.hop > 0) {
         starrings.forEach(repo => {
           dispatch(URL.STARGAZER, new UrlEvent(
-            pipes.repo2stargazerUrl(repo.full_name),
+            pipes.repo2stargazerUrl(repo),
             repo,
             urlEvent.hop - 1
           ))
