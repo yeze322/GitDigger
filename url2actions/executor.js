@@ -1,6 +1,6 @@
 var Q = require('../messageQ')
 var pipes = require('../actions/pipes')
-var redisClient = require('./redisClient')
+var pPipes = require('../actions/promisePipes')
 var dispatch = require('../actions/dispatch').bind(this, Q)
 var { SAVE, URL } = require('../actions/types')
 var { UrlEvent, StargazerEdge, StargazingEdge } = require('../actions/schemas')
@@ -20,21 +20,9 @@ function fetchThenSave (from, to) {
 fetchThenSave(URL.REPO, SAVE.REPO)
 fetchThenSave(URL.USER, SAVE.USER)
 
-function checkDupUrl(url) {
-  return redisClient
-    .saddAsync('url', url)
-    .then(success => {
-      if (success === 0) {
-        throw 'skip dup url'
-      } else {
-        return url
-      }
-    })
-}
-
 Q.process(URL.STARGAZER, function (job, done) {
   var urlEvent = job.data
-  checkDupUrl(urlEvent.url)
+  pPipes.blockDupUrl(urlEvent.url)
     .then(url => pipes.url2request(url))
     // STEP 1 - Save entities to db
     .then(stargazers => {
@@ -65,7 +53,7 @@ Q.process(URL.STARGAZER, function (job, done) {
 
 Q.process(URL.STARRING, function (job, done) {
   var urlEvent = job.data
-  checkDupUrl(urlEvent.url)
+  pPipes.blockDupUrl(urlEvent.url)
     .then(url => pipes.url2request(url))
     // STEP 1 - Save entities to db
     .then(starrings => {
@@ -96,8 +84,6 @@ Q.process(URL.STARRING, function (job, done) {
 })
 
 function cleanUp () {
-  console.log('Stop redis client ...')
-  redisClient.end()
   console.log('Stop kue connection ...')
   Q.shutdown(3000, function (err) {
     console.log('Kue Shutdown: ', err || '')
