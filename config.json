@@ -1,0 +1,21 @@
+{
+  "kue": {
+    "prefix": "q",
+    "redis": {
+      "host": "localhost",
+      "port": "3456",
+      "db": 3
+    }
+  },
+  "redis": {
+    "host": "localhost",
+    "port": "3456",
+    "db": 2
+  },
+  "psql": {
+    "user": "zeye",
+    "database": "github",
+    "host": "localhost",
+    "port": 5432
+  }
+}

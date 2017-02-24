@@ -1,6 +1,6 @@
 let rp = require('request-promise')
 
-let reponame2repoUrl = (fullName) => `https://api.github.com/repos/${fullName}`
+let repoName2repoUrl = (fullName) => `https://api.github.com/repos/${fullName}`
 let repo2stargazerUrl = (repo) => `https://api.github.com/repos/${repo.full_name}/stargazers`
 let user2starringUrl = (user) => `https://api.github.com/users/${user.login}/starred`
 let page2urlSuffix = (page, per_page) => `?page=${page}&per_page=${per_page}`

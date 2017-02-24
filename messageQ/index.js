@@ -1,5 +1,5 @@
-var config = require('./config.json')
+var config = require('../config.json')
 var kue = require('kue')
-var q = kue.createQueue(config)
+var q = kue.createQueue(config.kue)
 
 module.exports = q

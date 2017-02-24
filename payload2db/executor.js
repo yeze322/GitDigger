@@ -1,13 +1,14 @@
 var pgp = require('pg-promise')({
   promiseLib: require('bluebird')
 })
-var db = pgp(require('./config.json'))
+var config = require('../config.json')
+var db = pgp(config.psql)
 var q = require('../messageQ')
 var { SAVE } = require('../actions/types')
 
 const getQuery = pgp.helpers.insert
 const IGNORE_CONFLICT = ' ON CONFLICT DO NOTHING'
-const onErr = (table) => (reason) => { console.log('[db]Failed at ', table, ' -> ', reason.detail) }
+const onErr = (table) => (reason) => { console.log('[db]Failed at ', table, ' -> ', reason.detail || reason) }
 
 console.log('================================')
 console.log('Register message listener ...')
