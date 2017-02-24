@@ -1,5 +1,6 @@
 {
   "user": "zeye",
   "database": "github",
+  "host": "localhost",
   "port": 5432
 }

@@ -1,6 +1,6 @@
 var redisClient = require('../redis/redisClient')
 
-function blockDupUrl(url) {
+function blockDupUrl (url) {
   return redisClient
     .saddAsync('url', url)
     .then(success => {
@@ -12,6 +12,16 @@ function blockDupUrl(url) {
     })
 }
 
+function repoid2stargazerCount (repoid) {
+
+}
+
+function userid2starringCount (userid) {
+
+}
+
 module.exports = {
-  blockDupUrl
+  blockDupUrl,
+  repoid2stargazerCount,
+  userid2starringCount
 }

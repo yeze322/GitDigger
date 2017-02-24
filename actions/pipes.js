@@ -5,6 +5,21 @@ let repo2stargazerUrl = (repo) => `https://api.github.com/repos/${repo.full_name
 let user2starringUrl = (user) => `https://api.github.com/users/${user.login}/starred`
 let page2urlSuffix = (page, per_page) => `?page=${page}&per_page=${per_page}`
 
+let repo2stargazerUrlList = (repo) => {
+  let stargazerCnt = repo.stargazers_count
+  let per_page = 100
+  let ret = []
+  let prefix = repo2stargazerUrl(repo)
+  for (let i = 0; i < stargazerCnt / per_page; i++) {
+    ret.push(prefix + page2urlSuffix(i, per_page))
+  }
+  return ret
+}
+
+let user2starringUrlList = (user) => {
+  
+}
+
 let _url2request = (url) => {
   console.log('[GET] ', url)
   return rp({
