@@ -1,4 +1,5 @@
 let rp = require('request-promise')
+let config = require('../config.json')
 
 let repoName2repoUrl = (fullName) => `https://api.github.com/repos/${fullName}`
 let repo2stargazerUrl = (repo) => `https://api.github.com/repos/${repo.full_name}/stargazers`
@@ -34,11 +35,11 @@ let user2starringUrlList = (user) => {
 
 let _url2request = (url) => {
   console.log('[GET] ', url)
+  let headers = {'User-Agent': 'user2repo'}
+  if (config.github.withtoken) headers['Authorization'] = config.github.token
   return rp({
     uri: url,
-    headers: {
-      'User-Agent': 'user2repo'
-    },
+    headers: headers,
     json: true,
     resolveWithFullResponse: true
   })

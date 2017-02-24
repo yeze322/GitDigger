@@ -17,5 +17,9 @@
     "database": "github",
     "host": "localhost",
     "port": 5432
+  },
+  "github": {
+    "withtoken": false,
+    "token": "Bearer [your token]"
   }
 }
