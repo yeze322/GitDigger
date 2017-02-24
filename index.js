@@ -13,8 +13,10 @@ function startFromRepoName (fullName) {
       var repoEntity = data.body
       console.log('Success', repoEntity.id, repoEntity.full_name)
       dispatch(SAVE.REPO, repoEntity)
-      var nextUrl = pipes.repo2stargazerUrl(repoEntity)
-      dispatch(URL.STARGAZER, new UrlEvent(nextUrl, repoEntity, 2))
+      var nextUrls = pipes.repo2stargazerUrlList(repoEntity)
+      nextUrls.forEach(url => {
+        dispatch(URL.STARGAZER, new UrlEvent(url, repoEntity, 2))
+      })
     })
     .catch(err => {
       console.log('Err: ', err)

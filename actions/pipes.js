@@ -22,7 +22,7 @@ let repo2stargazerUrlList = (repo) => {
   }
   let per_page = 100
   let ret = []
-  for (let i = 0; i < stargazerCnt / per_page; i++) {
+  for (let i = 1; i < stargazerCnt / per_page + 1; i++) {
     ret.push(prefix + _page2urlSuffix(i, per_page))
   }
   return ret

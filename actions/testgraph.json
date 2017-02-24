@@ -1,9 +1,10 @@
 {
   "https://api.github.com/repos/vuejs/vue": {
     "id": 1001,
-    "full_name": "vuejs/vue"
+    "full_name": "vuejs/vue",
+    "stargazers_count": 234
   },
-  "https://api.github.com/repos/vuejs/vue/stargazers": [
+  "https://api.github.com/repos/vuejs/vue/stargazers?page=1&per_page=100": [
     { "id": 666, "login": "john" },
     { "id": 777, "login": "nicholas" }
   ],

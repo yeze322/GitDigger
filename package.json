@@ -10,7 +10,7 @@
     "db:init": "psql -d github -f psql/createTable.sql",
     "db:clean": "psql -d github -f psql/cleanTable.sql",
     "db:reset": "psql -d github -f psql/dropTable.sql",
-    "redis:flush": "redis-cli -p 3456 -n 2 flushdb",
+    "redis:clean": "redis-cli -p 3456 -n 2 flushdb",
     "start": "npm run service:db && npm run service:url",
     "restart": "pm2 stop all && pm2 flush && npm run start && npm run redis:flush",
     "stop": "pm2 stop dig_db dig_url",
