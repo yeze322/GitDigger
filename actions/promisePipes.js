@@ -12,16 +12,13 @@ function blockDupUrl (url) {
     })
 }
 
-function repoid2stargazerCount (repoid) {
-
-}
-
-function userid2starringCount (userid) {
-
+function handleFailedUrl (url) {
+  return redisClient
+    .sremAsync('url', url)
+    .then(success => redisClient.sadd('failed_url', url))
 }
 
 module.exports = {
   blockDupUrl,
-  repoid2stargazerCount,
-  userid2starringCount
+  handleFailedUrl
 }

@@ -12,7 +12,7 @@
     "db:reset": "psql -d github -f psql/dropTable.sql",
     "redis:clean": "redis-cli -p 3456 -n 2 flushdb",
     "start": "npm run service:db && npm run service:url",
-    "restart": "pm2 stop all && pm2 flush && npm run start && npm run redis:flush",
+    "restart": "pm2 stop all && pm2 flush && npm run start && npm run redis:clean",
     "stop": "pm2 stop dig_db dig_url",
     "service:db": "pm2 start ./payload2db/executor.js --name=\"dig_db\"",
     "service:url": "pm2 start ./url2actions/executor.js --name=\"dig_url\""

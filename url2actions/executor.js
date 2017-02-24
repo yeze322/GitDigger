@@ -52,6 +52,9 @@ Q.process(URL.STARGAZER, function (job, done) {
     })
     .catch(err => {
       console.log(`Err at [${urlEvent.url}] - ${err}`)
+      if (err !== 'skip dup url') {
+        return pPipes.handleFailedUrl(urlEvent.url)
+      }
     })
     .finally(done)
 })
@@ -109,6 +112,9 @@ Q.process(URL.STARRING, function (job, done) {
     .catch(err => {
       // switch err.reason, ignore it or save to error list
       console.log(`Err at [${urlEvent.url}] - ${err}`)
+      if (err !== 'skip dup url') {
+        return pPipes.handleFailedUrl(urlEvent.url)
+      }
     })
     .finally(done)
 })
