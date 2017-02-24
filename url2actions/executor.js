@@ -11,7 +11,7 @@ function fetchThenSave (from, to) {
     var urlEvent = job.data
     var request = pipes.url2request(urlEvent.url)
     request.then(data => {
-      dispatch(to, data)
+      dispatch(to, data.body)
       done()
     })
   })
@@ -25,7 +25,8 @@ Q.process(URL.STARGAZER, function (job, done) {
   pPipes.blockDupUrl(urlEvent.url)
     .then(url => pipes.url2request(url))
     // STEP 1 - Save entities to db
-    .then(stargazers => {
+    .then(data => {
+      let stargazers = data.body
       dispatch(SAVE.STARGAZER, new StargazerEdge(
         urlEvent.invoker.id,
         stargazers.map(x => x.id)
@@ -56,7 +57,8 @@ Q.process(URL.STARRING, function (job, done) {
   pPipes.blockDupUrl(urlEvent.url)
     .then(url => pipes.url2request(url))
     // STEP 1 - Save entities to db
-    .then(starrings => {
+    .then(data => {
+      let starrings = data.body
       dispatch(SAVE.STARRING, new StargazingEdge(
         urlEvent.invoker.id,
         starrings.map(x => x.id)

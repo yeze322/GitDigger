@@ -27,7 +27,8 @@ let _url2request = (url) => {
     headers: {
       'User-Agent': 'user2repo'
     },
-    json: true
+    json: true,
+    resolveWithFullResponse: true
   })
 }
 
@@ -36,7 +37,7 @@ let _test_url2request = (url) => {
   return new Promise((resolve, reject) => {
     let value = _testGraph[url]
     if (value) {
-      resolve(value)
+      resolve({ body: value })
     } else {
       reject('No Content.')
     }

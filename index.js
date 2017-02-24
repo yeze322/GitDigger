@@ -9,7 +9,8 @@ function startFromRepoName (fullName) {
   var url = pipes.repoName2repoUrl(fullName)
   var request = pipes.url2request(url)
   return request
-    .then(repoEntity => {
+    .then(data => {
+      var repoEntity = data.body
       console.log('Success', repoEntity.id, repoEntity.full_name)
       dispatch(SAVE.REPO, repoEntity)
       var nextUrl = pipes.repo2stargazerUrl(repoEntity)
