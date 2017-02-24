@@ -20,13 +20,17 @@ function fetchThenSave (from, to) {
 fetchThenSave(URL.REPO, SAVE.REPO)
 fetchThenSave(URL.USER, SAVE.USER)
 
+/**
+ * @summary This listener is used to fetch stargazers of a repo.
+ *          Then create new url jobs to fetch those stargazers' starred repos.
+ */
 Q.process(URL.STARGAZER, function (job, done) {
   var urlEvent = job.data
   pPipes.blockDupUrl(urlEvent.url)
     .then(url => pipes.url2request(url))
+    .then(data => data.body)
     // STEP 1 - Save entities to db
-    .then(data => {
-      let stargazers = data.body
+    .then(stargazers => {
       dispatch(SAVE.STARGAZER, new StargazerEdge(
         urlEvent.invoker.id,
         stargazers.map(x => x.id)
@@ -52,13 +56,33 @@ Q.process(URL.STARGAZER, function (job, done) {
     .finally(done)
 })
 
+/**
+ * @summary This listener is used to fetch a user's starring repos.
+ *          Then create next level repos' stargazers url to fetch users.
+ * @description Fetching job is much more complicated here than in STARGAZER.
+ *              1. As user entity doesn't contain it's starring repos count,
+ *                 we need to iterate by reading response.headers.link.
+ *              2. As repos contains it's stargazer count, so we need to generate
+ *                 a list of stargazer url in different page. (repos may have many stargazers)
+ */
 Q.process(URL.STARRING, function (job, done) {
   var urlEvent = job.data
   pPipes.blockDupUrl(urlEvent.url)
     .then(url => pipes.url2request(url))
-    // STEP 1 - Save entities to db
+    // STEP 0 - trigger next page request (at the same level)
     .then(data => {
-      let starrings = data.body
+      let link = (data.headers || {})['Link']
+      let nextUrl = pipes.link2nextUrl(link)
+      if (nextUrl) {
+        dispatch(
+          URL.STARRING, new UrlEvent(
+            nextUrl, urlEvent.invoker, urlEvent.hop
+          ))
+      }
+      return data.body
+    })
+    // STEP 1 - Save entities to db
+    .then(starrings => {
       dispatch(SAVE.STARRING, new StargazingEdge(
         urlEvent.invoker.id,
         starrings.map(x => x.id)
@@ -70,11 +94,15 @@ Q.process(URL.STARRING, function (job, done) {
     .then(starrings => {
       if (urlEvent.hop > 0) {
         starrings.forEach(repo => {
-          dispatch(URL.STARGAZER, new UrlEvent(
-            pipes.repo2stargazerUrl(repo),
-            repo,
-            urlEvent.hop - 1
-          ))
+          let nextUrlList = pipes.repo2stargazerUrlList(repo)
+          // Since we can get repo's stargazer count,
+          // so next urls can be calculated directly.
+          // No step 0.
+          nextUrlList.forEach(url => {
+            dispatch(URL.STARGAZER, new UrlEvent(
+              url, repo, urlEvent.hop - 1
+            ))
+          })
         })
       }
     })
