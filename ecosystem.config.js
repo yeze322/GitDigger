@@ -8,13 +8,17 @@ module.exports = {
     // First application
     {
       name      : "dig_db",
-      script    : "./payload2db/executor.js"
+      script    : "./payload2db/executor.js",
+      exec_mode : "cluster",
+      instances : 2
     },
 
     // Second application
     {
       name      : "dig_url",
-      script    : "./url2actions/executor.js"
+      script    : "./url2actions/executor.js",
+      exec_mode : "cluster",
+      instances : 2
     }
   ]
 }

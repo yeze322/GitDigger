@@ -77,6 +77,8 @@ Q.process(URL.STARRING, function (job, done) {
       let link = (data.headers || {})['link']
       let nextUrl = pipes.link2nextUrl(link)
       if (nextUrl) {
+        let progress = pipes.link2progress(link)
+        console.log(`+[${progress}] `, nextUrl)
         dispatch(
           URL.STARRING, new UrlEvent(
             nextUrl, urlEvent.invoker, urlEvent.hop

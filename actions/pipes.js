@@ -15,6 +15,17 @@ let link2nextUrl = (link) => {
   return null
 }
 
+let link2progress = (link) => {
+  let re_nxt = /<.+&page=([0-9]+)>; rel="next"/
+  let re_last = /<.+&page=([0-9]+)>; rel="last"/
+  let match_nxt = re.exec(link)
+  let match_last = re.exec(link)
+  if (match_nxt && match_last) {
+    return match_nxt[1] + '/' + match_last[1]
+  }
+  return '-/' + match_last[1]
+}
+
 let repo2stargazerUrlList = (repo) => {
   let prefix = repo2stargazerUrl(repo)
   let stargazerCnt = repo.stargazers_count
@@ -60,6 +71,7 @@ let _test_url2request = (url) => {
 
 module.exports = {
   link2nextUrl,
+  link2progress,
   repoName2repoUrl,
   repo2stargazerUrl,
   repo2stargazerUrlList,
