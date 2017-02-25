@@ -1,4 +1,5 @@
 {
+  "testmode": false,
   "kue": {
     "prefix": "q",
     "redis": {
@@ -20,6 +21,6 @@
   },
   "github": {
     "withtoken": false,
-    "token": "Bearer [your token]"
+    "token": "Bearer [token]"
   }
 }

@@ -15,7 +15,7 @@ function startFromRepoName (fullName) {
       dispatch(SAVE.REPO, repoEntity)
       var nextUrls = pipes.repo2stargazerUrlList(repoEntity)
       nextUrls.forEach(url => {
-        dispatch(URL.STARGAZER, new UrlEvent(url, repoEntity, 2))
+        dispatch(URL.STARGAZER, new UrlEvent(url, repoEntity, 1))
       })
     })
     .catch(err => {
@@ -23,7 +23,7 @@ function startFromRepoName (fullName) {
     })
 }
 
-startFromRepoName('vuejs/vue')
+startFromRepoName('atom/tree-view')
   // .then(() => {
   //   Q.shutdown(5000, (err) => {
   //     console.log('Kue shutdown: ', err || 'success!')

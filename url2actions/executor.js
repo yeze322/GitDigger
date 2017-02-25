@@ -74,7 +74,7 @@ Q.process(URL.STARRING, function (job, done) {
     .then(url => pipes.url2request(url))
     // STEP 0 - trigger next page request (at the same level)
     .then(data => {
-      let link = (data.headers || {})['Link']
+      let link = (data.headers || {})['link']
       let nextUrl = pipes.link2nextUrl(link)
       if (nextUrl) {
         dispatch(

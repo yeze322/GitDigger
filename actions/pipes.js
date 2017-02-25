@@ -64,5 +64,5 @@ module.exports = {
   repo2stargazerUrl,
   repo2stargazerUrlList,
   user2starringUrl,
-  url2request: _test_url2request
+  url2request: require('../config.json').testmode ? _test_url2request : _url2request
 }
